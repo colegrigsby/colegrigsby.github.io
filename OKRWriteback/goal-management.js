@@ -158,7 +158,7 @@ $(document).ready(function () {
         console.log(formInputs)
         let postData = {};
 
-        formInputs.each(() => {
+        formInputs.each(function () {
             let c = $(this);
             row_id = c[0].id.split('_')[1]
             col = c[0].id.split('_')[2]
