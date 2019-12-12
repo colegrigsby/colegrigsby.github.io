@@ -2,7 +2,8 @@ $(document).ready(function () {
     let worksheet;
     // This is the sheet we'll use for updating task info
     // the wsName should also be the table name, as it gets passed to the backend 
-    const wsName = 'PRA_OKR';  
+    const wsName = 'PRA_OKR';
+    const URL = 'http://localhost:8000'
     $('#updateItem').hide();
 
     function onSelectionChanged(marksEvent) {
@@ -53,12 +54,13 @@ $(document).ready(function () {
         headerRow.append('<th>Click on an OKR to update the status</th>');
 
         $('#data_table').append(headerRow);
+        $('#deleteOKR').attr('hidden', true)
+
     }
 
     function populateTable(dt) {
-        console.log(dt)
-        
-
+        // console.log(dt)
+        $('#deleteOKR').attr('hidden', false)
         $('#data_table tr').remove();
         var headerRow = $('<tr/>');
         headerRow.append('<th>Name</th>');
@@ -99,21 +101,33 @@ $(document).ready(function () {
             let dataRow = $('<tr/>');
             dataRow.append('<td><input type="text" class="form-control" "size="8" id="row_' + rowID + '_Name" value="' + item[nameIndex].formattedValue + '"/></td>');
             dataRow.append('<td><input type="text" class="form-control" "size="8" id="row_' + rowID + '_Quarter" value="' + item[quarterIndex].formattedValue + '" /></td>');
-            //   dataRow.append('<td><select class="form-control" value="'+item[quarterIndex].formattedValue+
-            // '><option>Completed</option><option>On Track</option><option>At Risk</option><option>Dropped</option></select></td>')
-            //   dataRow.append('<td><input type="text" size="8" id="row_' + rowID + '_Status" value="' + item[statusIndex].formattedValue + '" /></td>');
+
             let selectedOption = "";
             ["Completed", "On Track", "At Risk", "Dropped"].forEach(function (val) {
                 selectedOption += ('<option' + ((val == item[statusIndex].formattedValue) ? ' selected' : '') + '>' + val + '</option>')
             });
             dataRow.append('<td><select class="form-control" id="row_' + rowID + '_Status">' + selectedOption + '</select></td>')
             dataRow.append('<td><textarea type="text" class="form-control" size="8" id="row_' + rowID + '_OKR">' + item[OKRIndex].formattedValue + '</textarea></td>');
-
             $('#data_table').append(dataRow);
         });
     }
 
-    $('#newOKR').on('click', function (e) {
+    $('#deleteOKR').click((e) => {
+        e.preventDefault();
+
+        let formInputs = $('form#projectTasks :input[type="text"],select,textarea');
+        let row_id = formInputs[0].id.split('_')[1]
+
+        $.ajax({ type: 'DELETE', url: URL + '/delete/PRA_OKR/' + row_id })
+            .done((e) => {
+                // console.log(e);
+                worksheet.getDataSourcesAsync().then(function (dataSources) {
+                    dataSources[0].refreshAsync();
+                })
+            })
+    })
+
+    $('#newOKR').click((e) => {
         $('#updateItem').show();
         populateTable({
             columns: [
@@ -133,7 +147,6 @@ $(document).ready(function () {
                 ]
             ]
         })
-        //prevent update button click until filled out. 
     })
 
     $('form').submit(function (event) {
@@ -142,28 +155,25 @@ $(document).ready(function () {
         let formInputs = $('form#projectTasks :input[type="text"],select,textarea');
         let postData = {};
 
-        formInputs.each(function () {
+        formInputs.each(() => {
             let c = $(this);
             row_id = c[0].id.split('_')[1]
             col = c[0].id.split('_')[2]
-            console.log(row_id, col)
-            postData[col] = c[0].value ;
+            postData[col] = c[0].value;
         });
 
-        postData['row_id'] =  row_id ;
+        postData['row_id'] = row_id;
 
         // Post it
         $.ajax({
             type: 'POST',
-            url: 'http://localhost:8000/update/PRA_OKR',
+            url: URL + '/update/PRA_OKR',
             data: JSON.stringify(postData),
             contentType: 'application/json'
-        }).done(
+        }).done((r) => {
             worksheet.getDataSourcesAsync().then(function (dataSources) {
                 dataSources[0].refreshAsync();
             })
-        );
-
-        // event.preventDefault();
+        });
     });
 });
