@@ -155,6 +155,7 @@ $(document).ready(function () {
         console.log("Submitting form")
         let row_id, col
         let formInputs = $('form#projectTasks :input[type="text"],select,textarea');
+        console.log(formInputs)
         let postData = {};
 
         formInputs.each(() => {
