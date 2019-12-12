@@ -164,6 +164,7 @@ $(document).ready(function () {
 
         postData['row_id'] = row_id;
 
+        console.log(postData)
         // Post it
         $.ajax({
             type: 'POST',
