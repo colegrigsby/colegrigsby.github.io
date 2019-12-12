@@ -3,7 +3,7 @@ $(document).ready(function () {
     // This is the sheet we'll use for updating task info
     // the wsName should also be the table name, as it gets passed to the backend 
     const wsName = 'PRA_OKR';
-    const URL = 'http://localhost:8000'
+    const URL = 'https://sv2lxxcntdb01.corp.equinix.com'
     $('#updateItem').hide();
 
     function onSelectionChanged(marksEvent) {
