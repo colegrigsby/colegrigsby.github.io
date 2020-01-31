@@ -59,17 +59,18 @@ $(document).ready(function () {
     }
 
     function populateTable(dt) {
-        // console.log(dt)
+        // console.log(dt) 
         $('#deleteOKR').attr('hidden', false)
         $('#data_table tr').remove();
         var headerRow = $('<tr/>');
         headerRow.append('<th>Name</th>');
         headerRow.append('<th>Quarter</th>');
+        headerRow.append('<th>Group</th>');
         headerRow.append('<th>Status</th>');
         headerRow.append('<th>OKR</th>');
         $('#data_table').append(headerRow);
 
-        let nameIndex, quarterIndex, statusIndex, OKRIndex, rowIndex, quarterOptions;
+        let nameIndex, quarterIndex, statusIndex, OKRIndex, rowIndex, groupIndex;
 
         // get our column indexes
         for (let c of dt.columns) {
@@ -79,6 +80,9 @@ $(document).ready(function () {
                     break;
                 case 'Quarter':
                     quarterIndex = c.index;
+                    break;
+                case 'Area':
+                    groupIndex = c.index;
                     break;
                 case 'Status':
                     statusIndex = c.index;
@@ -100,9 +104,15 @@ $(document).ready(function () {
             const rowID = item[rowIndex].formattedValue;
             let dataRow = $('<tr/>');
             dataRow.append('<td><input type="text" class="form-control" "size="8" id="row_' + rowID + '_Name" value="' + item[nameIndex].formattedValue + '"/></td>');
-            dataRow.append('<td><input type="text" class="form-control" "size="8" id="row_' + rowID + '_Quarter" value="' + item[quarterIndex].formattedValue + '" /></td>');
-
+            dataRow.append('<td><input type="text" class="form-control" "size="4" id="row_' + rowID + '_Quarter" value="' + item[quarterIndex].formattedValue + '" /></td>');
             let selectedOption = "";
+
+            ["Program Management", "Reporting and Analytics", "Communications", "Documentation"].forEach(function (val) {
+                selectedOption += ('<option' + ((val == item[groupIndex].formattedValue) ? ' selected' : '') + '>' + val + '</option>')
+            });
+            dataRow.append('<td><select class="form-control" id="row_' + rowID + '_Area">' + selectedOption + '</select></td>')
+            
+            selectedOption = "";
             ["Completed", "On Track", "At Risk", "Dropped"].forEach(function (val) {
                 selectedOption += ('<option' + ((val == item[statusIndex].formattedValue) ? ' selected' : '') + '>' + val + '</option>')
             });
@@ -133,14 +143,16 @@ $(document).ready(function () {
             columns: [
                 { fieldName: "Name", "index": 0 },
                 { fieldName: "Quarter", "index": 1 },
-                { fieldName: "Status", "index": 2 },
-                { fieldName: "OKR", "index": 3 },
-                { fieldName: "RowID", "index": 4 }
+                { fieldName: "Area", "index": 2 },
+                { fieldName: "Status", "index": 3 },
+                { fieldName: "OKR", "index": 4 },
+                { fieldName: "RowID", "index": 5 }
             ],
             data: [
                 [
                     { formattedValue: "" },
                     { formattedValue: "" },
+                    { formattedValue: "Program Management" },
                     { formattedValue: "On Track" },
                     { formattedValue: "" },
                     { formattedValue: -1 }
@@ -178,6 +190,9 @@ $(document).ready(function () {
             worksheet.getDataSourcesAsync().then(function (dataSources) {
                 dataSources[0].refreshAsync();
             })
+            //TODO clear selections
+            //worksheet.selectMarksByValueAsync([], tableau.SelectionUpdateType.Remove );
+        
         });
     });
 });
