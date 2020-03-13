@@ -10,8 +10,6 @@ $(document).ready(function () {
         let dashboard;
         dashboard = tableau.extensions.dashboardContent.dashboard;
 
-        // TODO get data async of currentuser worksheet https://community.tableau.com/thread/278345
-
         //set the main worksheet to listen to
         for (const ws of dashboard.worksheets) {
             if (ws.name === wsName) {
@@ -20,8 +18,6 @@ $(document).ready(function () {
         }
 
         // Add mark selection event listener to our sheet
-        worksheet.addEventListener(tableau.TableauEventType.MarkSelectionChanged, onSelectionChanged);
-
         console.log('"Extension Initialized. Running in dashboard named ' + dashboard.name);
         console.log('Sheet info: ' + worksheet.name);
     }, function (err) {
