@@ -45,7 +45,6 @@ $(document).ready( () => {
         console.log(formInput)
 
         let names = formInput.value.split("\n")
-        print(names)
 
         worksheet.applyFilterAsync(fieldName, names, "replace").then((e) => {
             console.log("DONE", names, e)
