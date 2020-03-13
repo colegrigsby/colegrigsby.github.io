@@ -48,7 +48,7 @@ $(document).ready( () => {
         print(names)
 
         worksheet.applyFilterAsync(fieldName, names, "replace").then((e) => {
-            console.log("DONE", e)
+            console.log("DONE", names, e)
         })
     })
 });
