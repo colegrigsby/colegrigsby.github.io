@@ -25,7 +25,7 @@ $(document).ready( () => {
         console.log('Error while Initializing: ' + err.toString());
     });
 
-    $('#clear').click((e) => {
+    $('#clearMFilters').click((e) => {
         e.preventDefault();
         console.log("Clearing Form")
 
@@ -37,7 +37,7 @@ $(document).ready( () => {
     })
 
 
-    $('#apply').click((e) => {
+    $('#applyMFilters').click((e) => {
         e.preventDefault();
 
         console.log("Submitting form")
