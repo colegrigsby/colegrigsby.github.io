@@ -30,7 +30,7 @@ $(document).ready( () => {
         console.log("Clearing Form")
 
         // Clear INPUT 
-        $('#accountInputField').text = "Paste List Here"
+        $('#accountInputField')[0].value = ""
         worksheet.applyFilterAsync(fieldName, [], "replace").then((e) => {
             console.log("DONE", e)
         })
@@ -41,10 +41,10 @@ $(document).ready( () => {
         e.preventDefault();
 
         console.log("Submitting form")
-        let formInput = $('#accountInputField');
+        let formInput = $('#accountInputField')[0];
         console.log(formInput)
 
-        let names = formInput.text.split("\n")
+        let names = formInput.value.split("\n")
         print(names)
 
         worksheet.applyFilterAsync(fieldName, names, "replace").then((e) => {
