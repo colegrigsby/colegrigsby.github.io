@@ -1,11 +1,11 @@
-$(document).ready(function () {
+$(document).ready( () => {
     let worksheet;
     // This is the sheet we'll use for updating task info
     // the wsName should also be the table name, as it gets passed to the backend 
     const wsName = 'TestSheet';
     const fieldName = 'pra Account Name Equinix Alias'
 
-    tableau.extensions.initializeAsync().then(function () {
+    tableau.extensions.initializeAsync().then(() => {
         // Initialization succeeded! Get the dashboard's name & log to console
         let dashboard;
         dashboard = tableau.extensions.dashboardContent.dashboard;
