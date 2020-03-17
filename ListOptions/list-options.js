@@ -2,7 +2,7 @@ $(document).ready( () => {
     let worksheet;
     // This is the sheet we'll use for updating task info
     // the wsName should also be the table name, as it gets passed to the backend 
-    const wsName = 'TestSheet';
+    const wsName = 'A and Z';
     const fieldName = 'pra Account Name Equinix Alias'
 
     tableau.extensions.initializeAsync().then(() => {
