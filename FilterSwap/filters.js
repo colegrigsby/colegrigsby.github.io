@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    console.log("Starting Extension", document.location)
+    console.log("Starting Extension", document.location, window.location)
     let filterParameter = "Multiple Filters Parameter"
     let parameterValues = []; 
     let currentParam; 
